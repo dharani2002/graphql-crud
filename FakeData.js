@@ -1,42 +1,4 @@
- let users=[
-    {
-        id:1,
-        name:"Aries",
-        age:18,
-        married:true
-    },
-    {
-        id:2,
-        name:"tauros",
-        age:20,
-        married:false
-    },
-    {
-        id:3,
-        name:"cancer",
-        age:28,
-        married:true
-    },
-    {
-        id:4,
-        name:"gemini",
-        age:22,
-        married:false
-    },
-    {
-        id:5,
-        name:"libra",
-        age:30,
-        married:true
-    },
-    {
-        id:5,
-        name:"aquarius",
-        age:23,
-        married:false
-    },
 
-]
 
  let games = [
     {id: '1', title: 'Zelda, Tears of the Kingdom', platform: ['Switch']},
@@ -62,5 +24,5 @@
 {id: '7', rating: 10, content: 'lorem ipsum', author_id: '3', game_id: '1'},
 ]
   
- export default {users, games,reviews,authors}
+ export default {games,reviews,authors}
  

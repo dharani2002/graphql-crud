@@ -23,6 +23,8 @@
 {id: '6', rating: 7, content: 'lorem ipsum', author_id: '1', game_id: '2'},
 {id: '7', rating: 10, content: 'lorem ipsum', author_id: '3', game_id: '1'},
 ]
+
+let gameStats=[]
   
- export default {games,reviews,authors}
+ export default { games,reviews,authors}
  

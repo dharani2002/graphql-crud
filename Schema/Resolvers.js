@@ -1,4 +1,5 @@
 import db from "../FakeData.js"
+import { generateToken } from "../auth.js";
 
 
 export const resolvers = {
@@ -48,7 +49,8 @@ export const resolvers = {
         return db.authors
       },
       author(_, args) {
-        return db.authors.find((author) => author.id === args.id)
+        const author= db.authors.find((author) => author.id === args.id)
+        
       },
       reviews() {
         return db.reviews
@@ -178,13 +180,13 @@ export const resolvers = {
   
         return db.reviews
       },
-      addAuthor(_,args){
+      async addAuthor(_,args){
         let author = {
           ...args.author, 
           id: Math.floor(Math.random() * 10000).toString(),
           verified:false
         }
-        db.authors.push(author)
+        
   
         return author
       },
@@ -216,6 +218,13 @@ export const resolvers = {
   
         return db.authors.find((g) => g.id === args.id)
 
+      },
+      login(_,args){
+        const author=db.authors.find((g) => g.id === args.id)
+        const token=generateToken({id:author.id,name:author.name})
+        author.token=token
+        author.isLoggedIn=true
+        return author
       }     
     }
   }

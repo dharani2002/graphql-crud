@@ -2,15 +2,17 @@ import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import { typeDefs } from "./Schema/TypeDefs.js";
 import { resolvers } from "./Schema/Resolvers.js";
+import { authContext,ipContext } from "./auth.js";
 
 const app=express();
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    return { ip: req.ip || req.headers['x-forwarded-for'] || 'Unknown' };
-  },
+  context: async ({ req }) => ({
+    ...await authContext({ req }),
+    ...ipContext({ req })
+  }),
 });
 
 async function startServer() {

@@ -9,9 +9,9 @@
 ]
   
   let authors = [
-{id: '1', name: 'mario', verified: true},
-{id: '2', name: 'yoshi', verified: false},
-{id: '3', name: 'peach', verified: true},
+{id: '1', name: 'mario', verified: true,token:null,isLoggedIn:false},
+{id: '2', name: 'yoshi', verified: false,token:null,isLoggedIn:false},
+{id: '3', name: 'peach', verified: true,token:null,isLoggedIn:false},
 ]
 
  let reviews = [

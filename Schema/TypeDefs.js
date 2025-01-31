@@ -16,6 +16,8 @@ export const typeDefs=gql`
       name:String!
       verified:Boolean!
       reviews:[Review!]
+      token:String
+      isLoggedin:Boolean
   }
   type Review{
       id:ID!
@@ -64,6 +66,7 @@ export const typeDefs=gql`
   updateAuthor(id:ID!,name:String!):Author
   deleteAuthor(id:ID!):[Author]
   verifyAuthor(id:ID!):Author
+  login(id:ID!):Author
   }
   input AddGameInput {
     title: String!,

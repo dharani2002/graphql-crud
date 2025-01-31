@@ -5,7 +5,13 @@ import { resolvers } from "./Schema/Resolvers.js";
 
 const app=express();
 
-const server=new ApolloServer({typeDefs,resolvers})
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    return { ip: req.ip || req.headers['x-forwarded-for'] || 'Unknown' };
+  },
+});
 
 async function startServer() {
   await server.start(); // Ensure the server is started

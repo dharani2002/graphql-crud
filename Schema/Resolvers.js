@@ -3,8 +3,43 @@ import db from "../FakeData.js"
 
 export const resolvers = {
     Query: {
-      games() {
-        return db.games
+      games(_,{filters}) {
+        let filteredGames = db.games.filter(game => !game.deleted);
+
+      if (filters) {
+        if (filters.platform && filters.platform.length > 0) {
+          filteredGames = filteredGames.filter(game => 
+              filters.platform.some(p => game.platform.includes(p))
+          );
+        }
+
+        if (filters.authorId) {
+          const authorReviews = db.reviews.filter(review => 
+              review.author_id === filters.authorId && !review.deleted
+          );
+          const gameIds = new Set(authorReviews.map(review => review.game_id));
+          filteredGames = filteredGames.filter(game => gameIds.has(game.id));
+        }
+
+        if (filters.minRating || filters.maxRating) {
+        filteredGames = filteredGames.filter(game => {
+          const gameReviews = db.reviews.filter(r => 
+            r.game_id === game.id && !r.deleted
+          );
+            
+          if (gameReviews.length === 0) return false;
+          
+          const avgRating = gameReviews.reduce((acc, r) => acc + r.rating, 0) / gameReviews.length;
+          
+          if (filters.minRating && avgRating < filters.minRating) return false;
+          if (filters.maxRating && avgRating > filters.maxRating) return false;
+          
+          return true;
+          });
+        }
+      }
+
+      return filteredGames;
       },
       game(_, args) {
         return db.games.find((game) => game.id === args.id)
@@ -71,7 +106,10 @@ export const resolvers = {
         return game
       },
       deleteGame(_, args) {
-        db.games = db.games.filter((g) => g.id !== args.id)
+        const game = db.games.find(g => g.id === args.id);
+        game.deleted = true;
+        game.deletedAt = new Date().toISOString();
+        db.games = db.games.filter((g) => g.deleted==false)
   
         return db.games
       },
@@ -104,6 +142,10 @@ export const resolvers = {
         const existingReview = db.reviews.find(
           r => r.author_id === args.review.author_id && r.game_id === args.review.game_id
         )
+
+        // const existingReview = db.ratings.find(r => 
+        //   r.game_id === game_id && r.ip_address === ip_address
+        // );
         
         if (existingReview) {
             return {
